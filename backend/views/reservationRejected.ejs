@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Reservation Rejected</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+        background-color: #fdf1f1;
+        color: #333;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+      }
+      h2 {
+        color: #d9534f;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Reservation Rejected</h2>
+      <p>Hi <strong><%= name %></strong>,</p>
+      <p>
+        Unfortunately, Your reservation for <strong><%= date %></strong> at
+        <strong><%= time %> could not be approved</strong>
+      </p>
+      <% if (note) { %>
+      <p><strong>Note from Admin:</strong> <%= note %></p>
+      <% } %>
+      <p style="font-size: 0.9em">
+        Feel free to try booking for another time slot.
+      </p>
+    </div>
+  </body>
+</html>

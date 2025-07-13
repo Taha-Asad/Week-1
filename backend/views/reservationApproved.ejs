@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reservation Confirmed</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background-color: #f4f4f4; color: #333; }
+    .card { background: white; padding: 20px; border-radius: 8px; }
+    h2 { color: #2E8B57; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Reservation Confirmed</h2>
+    <p>Hello <strong><%= name %></strong>,</p>
+    <p>Your reservation has been confirmed for:</p>
+    <ul>
+      <li><strong>Date:</strong> <%= date %></li>
+      <li><strong>Time:</strong> <%= time %></li>
+      <li><strong>Reservation ID:</strong> <%= reservationID %></li>
+    </ul>
+    <p>We look forward to seeing you! 🍽️</p>
+    <p style="font-size: 0.9em;">If you need to cancel or reschedule, please contact us.</p>
+  </div>
+</body>
+</html>
