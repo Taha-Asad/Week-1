@@ -7,7 +7,7 @@ const postReservation = async (req, res) => {
     const { name, email, phoneNo, noOfPeople, date, time, message } = req.body;
     if (!name || !email || !phoneNo || !noOfPeople || !date || !time) {
       return res
-        .status(400)
+        .status(404)
         .json({ success: false, message: "Please provide all fields" });
     }
 

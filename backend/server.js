@@ -18,7 +18,8 @@ app.use(express.json());
 app.use(cors({origin: "http://localhost:5173/" , credentials:true}));
 
 // App Routes
-const reservationRouter = require("./routes/reservationRoutes.js")
+const reservationRouter = require("./routes/reservationRoutes.js");
+const menuRouter = require("./routes/menuRoutes.js");
 
 // User Reservation Routes
 
@@ -26,8 +27,14 @@ app.use("/api/v1/user" , reservationRouter );
 
 // Admin Reservation Routes
 
-app.use("/api/v1" , reservationRouter );
+app.use("/api/v1/admin" , reservationRouter );
 
+// Menu Routes
+
+//User Menu Route
+app.use("/api/v1/user" , menuRouter);
+// Admin Routes 
+app.use("/api/v1/admin" , menuRouter)
 connectDB();
 app.listen(PORT , ()=>{ 
     console.log(`Server is running on Port: ${PORT} `.blue.underline.bgGreen)
