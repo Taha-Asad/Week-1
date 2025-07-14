@@ -1,38 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <title>Reservation Rejected</title>
     <style>
       body {
-        font-family: Arial;
+        font-family: "Segoe UI", sans-serif;
+        background-color: #fff8f8;
         padding: 20px;
-        background-color: #fdf1f1;
         color: #333;
       }
-      .card {
+      .email-container {
+        max-width: 600px;
+        margin: auto;
         background: white;
-        padding: 20px;
-        border-radius: 8px;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
       }
       h2 {
         color: #d9534f;
       }
+      .footer {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #777;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
-    <div class="card">
-      <h2>Reservation Rejected</h2>
-      <p>Hi <strong><%= name %></strong>,</p>
-      <p>
-        Unfortunately, Your reservation for <strong><%= date %></strong> at
-        <strong><%= time %> could not be approved</strong>
-      </p>
+    <div class="email-container">
+      <h2>Reservation Rejected ❌</h2>
+      <p>Dear <strong><%= name %></strong>,</p>
+      <p>We regret to inform you that your reservation request for:</p>
+      <ul>
+        <li><strong>Date:</strong> <%= date %></li>
+        <li><strong>Time:</strong> <%= time %></li>
+      </ul>
+      <p>could not be accommodated at this time.</p>
       <% if (note) { %>
       <p><strong>Note from Admin:</strong> <%= note %></p>
       <% } %>
-      <p style="font-size: 0.9em">
-        Feel free to try booking for another time slot.
+      <p>
+        You may try booking a different slot. We apologize for any
+        inconvenience.
       </p>
+
+      <div class="footer">
+        — Café XYZ<br />
+        📍 Address: Main Street, Your City<br />
+        ☎️ Phone: 123-456-7890<br />
+        🌐 Website: www.cafexyz.com
+      </div>
     </div>
   </body>
 </html>

@@ -8,13 +8,26 @@ const {
   deleteMenu,
   updateMenuItem,
 } = require("../controllers/menuController.js");
+const adminAuth = require("../helper/adminAuth.js");
 const menuRouter = express.Router();
 
-menuRouter.post("/postMenuItem", upload.single("image"), postMenuItem);
+//User
 menuRouter.get("/menu", getMenuItem);
-menuRouter.get("/menu/:id", getMenuItemById);
-menuRouter.delete("/delete-menu/:id", deleteMenuItem);
-menuRouter.delete("/menu-bulkDelete", deleteMenu);
-menuRouter.patch("/update-menu/:id", upload.single("image"), updateMenuItem);
+//Admin
+menuRouter.post(
+  "/postMenuItem",
+  adminAuth,
+  upload.single("image"),
+  postMenuItem
+);
+menuRouter.get("/menu/:id", adminAuth, getMenuItemById);
+menuRouter.delete("/delete-menu/:id", adminAuth, deleteMenuItem);
+menuRouter.delete("/menu-bulkDelete", adminAuth, deleteMenu);
+menuRouter.patch(
+  "/update-menu/:id",
+  adminAuth,
+  upload.single("image"),
+  updateMenuItem
+);
 
 module.exports = menuRouter;

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reservation Request Received</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+      color: #333;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    h2 {
+      color: #007bff;
+    }
+    .details {
+      margin-top: 15px;
+      background: #f1f1f1;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    .footer {
+      margin-top: 25px;
+      font-size: 0.9em;
+      color: #777;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <h2>Reservation Request Received</h2>
+    <p>Dear <strong><%= name %></strong>,</p>
+
+    <p>Thank you for choosing <strong>Café XYZ</strong>!</p>
+
+    <p>We’ve received your reservation request and our team is currently reviewing it. You’ll receive a confirmation email shortly (within 10–15 minutes).</p>
+
+    <div class="details">
+      <p><strong>Reservation ID:</strong> <%= reservationID %></p>
+      <p><strong>Date:</strong> <%= date %></p>
+      <p><strong>Time:</strong> <%= time %></p>
+      <p><strong>Number of People:</strong> <%= noOfPeople %></p>
+    </div>
+
+    <p>If you have any urgent queries, feel free to reply to this email or contact us directly.</p>
+
+    <div class="footer">
+      — Café XYZ<br/>
+      📍 Main Street, Your City<br/>
+      ☎️ 123-456-7890<br/>
+      🌐 www.cafexyz.com
+    </div>
+  </div>
+</body>
+</html>

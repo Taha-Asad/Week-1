@@ -9,16 +9,20 @@ const {
   bulkDeleteAdmin,
   filterReservations,
 } = require("../controllers/reservationController");
+const adminAuth = require("../helper/adminAuth");
 
 const resvRouter = express.Router();
 
+
+//User
 resvRouter.post("/postReservations", postReservation);
-resvRouter.put("/admin/reservations/:_id", reservationApproval);
-resvRouter.post("/yourReservation", getUserReservation);
-resvRouter.get("/admin/all-reservations", getAllReservation);
 resvRouter.delete("/delete-userReservation", deleteUserReservtion);
-resvRouter.delete("/admin/delete-reservation/:id", deleteAdminReservation);
-resvRouter.delete("/admin/bulkDelete-reservation", bulkDeleteAdmin);
-resvRouter.get("/filter", filterReservations);
+resvRouter.post("/yourReservation", getUserReservation);
+// Admin
+resvRouter.put("/reservations/:_id", adminAuth ,reservationApproval);
+resvRouter.get("/all-reservations", adminAuth ,getAllReservation);
+resvRouter.delete("/delete-reservation/:id", adminAuth ,deleteAdminReservation);
+resvRouter.delete("/bulkDelete-reservation", adminAuth ,bulkDeleteAdmin);
+resvRouter.get("/filter", adminAuth ,filterReservations);
 
 module.exports = resvRouter;

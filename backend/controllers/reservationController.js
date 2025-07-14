@@ -56,6 +56,18 @@ const postReservation = async (req, res) => {
 
     await newReservation.save();
 
+    await SendEmail(
+      newReservation.email,
+      "Your Reservation has been received!",
+      "reservationReceived",
+      {
+        name: newReservation.name,
+        date: newReservation.date.toDateString(),
+        time,
+        reservationID: newReservation.reservationID,
+        noOfPeople: newReservation.noOfPeople,
+      }
+    );
     return res.status(201).json({
       success: true,
       message:

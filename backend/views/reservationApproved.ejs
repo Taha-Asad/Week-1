@@ -1,25 +1,55 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Reservation Confirmed</title>
-  <style>
-    body { font-family: Arial; padding: 20px; background-color: #f4f4f4; color: #333; }
-    .card { background: white; padding: 20px; border-radius: 8px; }
-    h2 { color: #2E8B57; }
-  </style>
-</head>
-<body>
-  <div class="card">
-    <h2>Reservation Confirmed</h2>
-    <p>Hello <strong><%= name %></strong>,</p>
-    <p>Your reservation has been confirmed for:</p>
-    <ul>
-      <li><strong>Date:</strong> <%= date %></li>
-      <li><strong>Time:</strong> <%= time %></li>
-      <li><strong>Reservation ID:</strong> <%= reservationID %></li>
-    </ul>
-    <p>We look forward to seeing you! 🍽️</p>
-    <p style="font-size: 0.9em;">If you need to cancel or reschedule, please contact us.</p>
-  </div>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Reservation Confirmed</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #f3f3f3;
+        padding: 20px;
+        color: #333;
+      }
+      .email-container {
+        max-width: 600px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #28a745;
+      }
+      .footer {
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #777;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <h2>Reservation Confirmed 🎉</h2>
+      <p>Dear <strong><%= name %></strong>,</p>
+      <p>Your reservation at our café has been <strong>approved</strong>!</p>
+      <ul>
+        <li><strong>Date:</strong> <%= date %></li>
+        <li><strong>Time:</strong> <%= time %></li>
+        <li><strong>Reservation ID:</strong> <%= reservationID %></li>
+      </ul>
+      <p>
+        We look forward to serving you. If you need any help, just reply to this
+        email.
+      </p>
+
+      <div class="footer">
+        — Café XYZ<br />
+        📍 Address: Main Street, Your City<br />
+        ☎️ Phone: 123-456-7890<br />
+        🌐 Website: www.cafexyz.com
+      </div>
+    </div>
+  </body>
 </html>
