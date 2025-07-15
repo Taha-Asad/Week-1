@@ -1,10 +1,14 @@
+import { Routes, Route } from "react-router";
+import Footer from "./components/footer/Footer";
 
 
 function App() {
 
   return (
     <>
-    <h1>Hello</h1>
+    <Routes>
+    </Routes>
+      <Footer/>
     </>
   )
 }
