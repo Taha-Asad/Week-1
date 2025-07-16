@@ -26,6 +26,7 @@ const menuSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, "The category of the item is required"],
+      lowercase:true ,
       enum: [
         "breakfast",
         "lunch",

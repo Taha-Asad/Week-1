@@ -83,7 +83,7 @@ const Footer = () => {
                                 <Box sx={{ width: '100%', my: 2 }}>
                                     <Divider sx={{ bgcolor: "#fff", opacity: 0.2 }} />
                                 </Box>
-                                <Grid container spacing={10}>
+                                <Grid container spacing={5}>
                                     <Grid item xs={12} sm={4} md={4}>
                                         <Box sx={{
                                             display: 'flex',
@@ -116,7 +116,7 @@ const Footer = () => {
                                         </Box>
                                     </Grid>
 
-                                    <Grid item xs={12} sm={4} md={4}>
+                                    <Grid item size={{ xs:12 ,sm:4 ,md:4}}>
                                         <Box sx={{
                                             display: 'flex',
                                             flexDirection: 'row',

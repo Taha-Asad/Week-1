@@ -15,7 +15,7 @@ const postMenuItem = async (req, res) => {
       description,
       price,
       image,
-      category,
+      category:category.toLowerCase(),
       type,
     });
     await newMenuItem.save();
@@ -37,7 +37,7 @@ const getMenuItem = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Item fetched succesffully",
-      menu: item,
+      data: item,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

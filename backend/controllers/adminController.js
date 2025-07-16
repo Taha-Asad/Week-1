@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Reservation = require("../models/reservation.js");
 
-const adminLogin = async () => {
+const adminLogin = async (req , res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
