@@ -122,6 +122,7 @@ const deleteMenu = async (req, res) => {
 };
 const updateMenuItem = async (req, res) => {
   try {
+    console.log('Update menu item request:', { id: req.params.id, body: req.body, file: req.file });
     const { id } = req.params;
     const menuItem = await Menu.findById(id);
     if (!menuItem) {
@@ -129,20 +130,27 @@ const updateMenuItem = async (req, res) => {
         .status(404)
         .json({ success: false, message: "No item found by this id" });
     }
-    if (menuItem.image) {
-      const oldImagePath = path.join(
-        __dirname,
-        "..",
-        "uploads",
-        menuItem.image
-      );
-      fs.unlink(oldImagePath, (err) => {
-        if (err) {
-          console.error("Failed to delete old image", err);
-        }
-      });
+    
+    // Handle image update
+    if (req.file) {
+      // Delete old image if it exists
+      if (menuItem.image) {
+        const oldImagePath = path.join(
+          __dirname,
+          "..",
+          "uploads",
+          menuItem.image
+        );
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.error("Failed to delete old image", err);
+          }
+        });
+      }
       menuItem.image = req.file.filename;
     }
+    
+    // Update other fields
     const fieldsToUpdate = [
       "name",
       "description",
@@ -150,11 +158,19 @@ const updateMenuItem = async (req, res) => {
       "category",
       "type",
     ];
-    fieldsToUpdate.forEach((fields) => {
-      if (req.body[fields]) {
-        menuItem[fields] = req.body[fields];
+    fieldsToUpdate.forEach((field) => {
+      if (req.body[field]) {
+        if (field === "category") {
+          menuItem[field] = req.body[field].toLowerCase();
+        } else {
+          menuItem[field] = req.body[field];
+        }
       }
     });
+    
+    await menuItem.save();
+    console.log('Menu item updated successfully:', menuItem);
+    
     return res
       .status(200)
       .json({ success: true, message: "Item updated successfully", menuItem });

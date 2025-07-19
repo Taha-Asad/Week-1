@@ -46,7 +46,7 @@ const Menu = () => {
           alignItems: 'center',
           position: 'relative',
           py: 4,
-          marginBottom: "15%"
+          marginBottom: "5%"
         }}
       >
         {/* Heading with Lines */}

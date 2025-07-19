@@ -1,7 +1,33 @@
 const { getDateTimeObject } = require("../helper/dateTime.js");
 const Reservation = require("../models/reservation.js");
+const Admin = require("../models/admin.js");
 const { SendEmail } = require("../config/nodeMailer.js");
-const MAX_CAP = 60;
+const { sendReservationNotification } = require("./adminController.js");
+
+// Cache for reservation limit to avoid hitting database on every request
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Function to get current reservation limit from admin settings
+const getCurrentReservationLimit = async () => {
+  try {
+    // Check if cache is valid
+    if (global.reservationLimitCache && global.cacheTimestamp && (Date.now() - global.cacheTimestamp) < CACHE_DURATION) {
+      return global.reservationLimitCache;
+    }
+    
+    const admin = await Admin.findOne().select("settings.reservationLimit");
+    const limit = admin?.settings?.reservationLimit || 60; // Default to 60 if not set
+    
+    // Update cache
+    global.reservationLimitCache = limit;
+    global.cacheTimestamp = Date.now();
+    
+    return limit;
+  } catch (error) {
+    console.error("Error getting reservation limit:", error);
+    return 60; // Fallback to 60
+  }
+};
 const postReservation = async (req, res) => {
   try {
     const { name, email, phoneNo, noOfPeople, date, time, message } = req.body;
@@ -31,10 +57,11 @@ const postReservation = async (req, res) => {
         totalPeopleDuringSlot += resv.noOfPeople;
       }
     }
-    if (totalPeopleDuringSlot + noOfPeople > MAX_CAP) {
+    const currentLimit = await getCurrentReservationLimit();
+    if (totalPeopleDuringSlot + noOfPeople > currentLimit) {
       return res.status(400).json({
         success: false,
-        message: "This time slot is already full. Please try another time.",
+        message: `This time slot is already full. Maximum capacity is ${currentLimit} people. Please try another time.`,
       });
     }
     const generateReservationID = () => {
@@ -68,6 +95,16 @@ const postReservation = async (req, res) => {
         noOfPeople: newReservation.noOfPeople,
       }
     );
+    // Get the first admin for notifications (since this is a user reservation)
+    const admin = await Admin.findOne();
+    if (admin) {
+      await sendReservationNotification(
+        admin._id,
+        newReservation,
+        "new"
+      );
+    }
+
     return res.status(201).json({
       success: true,
       message:
@@ -120,6 +157,12 @@ const reservationApproval = async (req, res) => {
         }
       );
     }
+    await sendReservationNotification(
+      req.adminId,
+      reservation,
+      "status"
+    );
+
     return res.status(200).json({
       success: true,
       message: "Successfully updated status",
@@ -245,30 +288,53 @@ const bulkDeleteAdmin = async (req, res) => {
 };
 const filterReservations = async (req, res) => {
   try {
-    const { status, date, from, to, page = 1, limit = 10 } = req.query;
-    let query = {};
-    if (status) query.status = status;
+    const { status, date, from, to, page = 1, limit = 10, search } = req.query;
+
+    const andConditions = [];
+
+    if (status) {
+      andConditions.push({ status });
+    }
+
     if (date) {
       const start = new Date(date);
       const end = new Date(date);
       end.setDate(end.getDate() + 1);
-      query.date = {
-        $gte: start,
-        $lt: end,
-      };
+      andConditions.push({
+        date: { $gte: start, $lt: end },
+      });
     }
+
     if (from && to) {
-      query.date = {
-        $gte: new Date(from),
-        $lt: new Date(to),
-      };
+      andConditions.push({
+        date: {
+          $gte: new Date(from),
+          $lt: new Date(to),
+        },
+      });
     }
+
+    if (search) {
+      const searchRegex = new RegExp(search, "i");
+      andConditions.push({
+        $or: [
+          { name: searchRegex },
+          { reservationID: searchRegex },
+          { status: searchRegex },
+        ],
+      });
+    }
+
+    const query = andConditions.length > 0 ? { $and: andConditions } : {};
+
     const skip = (page - 1) * limit;
     const reservation = await Reservation.find(query)
       .sort({ date: 1 })
       .skip(skip)
       .limit(Number(limit));
+
     const total = await Reservation.countDocuments(query);
+
     return res.status(200).json({
       success: true,
       message: `Page: ${page} of reservations`,
@@ -281,6 +347,7 @@ const filterReservations = async (req, res) => {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
+
 module.exports = {
   postReservation,
   reservationApproval,
