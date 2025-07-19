@@ -21,6 +21,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 const reservationRouter = require("./routes/reservationRoutes.js");
 const menuRouter = require("./routes/menuRoutes.js");
 const adminRouter = require("./routes/adminRoutes.js");
+const blogRouter = require("./routes/blogRoutes.js");
+const publicBlogRouter = require("./routes/publicBlogRoutes.js");
+const contactRouter = require("./routes/contactRoutes.js");
 
 // Admin Main Routes
 
@@ -40,6 +43,16 @@ app.use("/api/v1/admin", reservationRouter);
 app.use("/api/v1/user", menuRouter);
 // Admin Routes
 app.use("/api/v1/admin", menuRouter);
+
+// Blog Routes
+app.use("/api/v1/admin/blog", blogRouter);
+
+// Public Blog Routes
+app.use("/api/v1/blog", publicBlogRouter);
+
+// Contact Routes
+app.use("/api/v1/contact", contactRouter);
+app.use("/api/v1/admin/contact", contactRouter);
 connectDB();
 app.listen(PORT, () => {
   console.log(`Server is running on Port: ${PORT} `.blue.underline.bgGreen);

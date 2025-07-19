@@ -12,6 +12,8 @@ import {
   BarChart as StatsIcon,
   Settings as SettingsIcon,
   Logout as LogoutIcon,
+  Article as BlogIcon,
+  Email as ContactIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 240;
@@ -35,6 +37,8 @@ const AdminLayout = () => {
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin-dashboard' },
     { text: 'Reservations', icon: <ReservationsIcon />, path: '/admin-dashboard/reservations' },
     { text: 'Menu', icon: <MenuIcon />, path: '/admin-dashboard/menu' },
+    { text: 'Blog', icon: <BlogIcon />, path: '/admin-dashboard/blog' },
+    { text: 'Contact', icon: <ContactIcon />, path: '/admin-dashboard/contact' },
     { text: 'Statistics', icon: <StatsIcon />, path: '/admin-dashboard/stats' },
     { text: 'Settings', icon: <SettingsIcon />, path: '/admin-dashboard/settings' },
   ];

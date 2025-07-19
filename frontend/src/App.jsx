@@ -11,6 +11,8 @@ import ReservationsPage from "./components/admin/ReservationsPage";
 import MenuPage from "./components/admin/MenuPage";
 import StatsPage from "./components/admin/StatsPage";
 import SettingsPage from "./components/admin/SettingsPage";
+import BlogPage from "./components/admin/BlogPage";
+import ContactPage from "./components/admin/ContactPage";
 import ProtectedRoute from "./components/admin/protectedRoutes";
 
 function App() {
@@ -40,6 +42,8 @@ function App() {
           <Route index element={<DashboardHome />} />
           <Route path="reservations" element={<ReservationsPage />} />
           <Route path="menu" element={<MenuPage />} />
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="contact" element={<ContactPage />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
