@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
     Box, Typography, Grid, Card, CardMedia, CardContent,
-    Chip, Button, CircularProgress, IconButton
+    Chip, Button, CircularProgress, IconButton, Dialog,
+    DialogTitle, DialogContent, DialogActions, Divider
 } from '@mui/material';
 import {
     Visibility as VisibilityIcon,
@@ -9,14 +10,18 @@ import {
     Person as PersonIcon,
     ArrowForward as ArrowForwardIcon,
     ChevronLeft as ChevronLeftIcon,
-    ChevronRight as ChevronRightIcon
+    ChevronRight as ChevronRightIcon,
+    Close as CloseIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import CommentSection from './CommentSection.jsx';
 
 const Blog = () => {
     const [blogPosts, setBlogPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     useEffect(() => {
         fetchBlogPosts();
@@ -25,19 +30,35 @@ const Blog = () => {
     const fetchBlogPosts = async () => {
         try {
             setLoading(true);
+            console.log('Fetching blog posts...');
+            
             const response = await axios.get('http://localhost:5000/api/v1/blog/posts', {
                 params: {
                     status: 'published',
-                    limit: 3,
+                    limit: 6, // Increased limit to get more posts
                     sortBy: 'createdAt',
                     sortOrder: 'desc'
                 }
             });
 
             console.log('Blog posts response:', response.data);
-            setBlogPosts(response.data.blogs || []);
+            
+            if (response.data.success && response.data.blogs) {
+                setBlogPosts(response.data.blogs);
+                console.log(`Loaded ${response.data.blogs.length} blog posts`);
+                // Log first blog post structure for debugging
+                if (response.data.blogs.length > 0) {
+                    console.log('First blog post structure:', response.data.blogs[0]);
+                    console.log('Content length:', response.data.blogs[0].content?.length);
+                    console.log('Excerpt:', response.data.blogs[0].excerpt);
+                }
+            } else {
+                console.log('No blog posts found or invalid response format');
+                setBlogPosts([]);
+            }
         } catch (error) {
             console.error('Error fetching blog posts:', error);
+            console.error('Error details:', error.response?.data || error.message);
             setBlogPosts([]);
         } finally {
             setLoading(false);
@@ -66,6 +87,23 @@ const Blog = () => {
         setCurrentIndex((prevIndex) =>
             prevIndex === 0 ? blogPosts.length - 1 : prevIndex - 1
         );
+    };
+
+    const handleReadMore = async (post) => {
+        setSelectedPost(post);
+        setDialogOpen(true);
+        
+        // Track view
+        try {
+            await axios.post(`http://localhost:5000/api/v1/blog/post/${post._id}/view`);
+        } catch (error) {
+            console.error('Error tracking view:', error);
+        }
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+        setSelectedPost(null);
     };
 
     const getVisiblePosts = () => {
@@ -273,7 +311,7 @@ const Blog = () => {
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                             <CommentIcon sx={{ fontSize: 14, color: '#6c757d' }} />
                                             <Typography variant="caption" sx={{ color: '#6c757d', fontSize: '0.7rem' }}>
-                                                {post.comments || 0}
+                                                {post.commentCount || 0}
                                             </Typography>
                                         </Box>
                                         <Typography variant="caption" sx={{ color: '#6c757d', fontSize: '0.7rem' }}>|</Typography>
@@ -340,7 +378,7 @@ const Blog = () => {
                                             overflow: 'hidden'
                                         }}
                                     >
-                                        {post.title}
+                                        {post.title || 'Untitled Blog Post'}
                                     </Typography>
 
                                     <Typography
@@ -350,14 +388,24 @@ const Blog = () => {
                                             mb: 1.5,
                                             lineHeight: 1.5,
                                             display: '-webkit-box',
-                                            WebkitLineClamp: 3,
+                                            WebkitLineClamp: 4,
                                             WebkitBoxOrient: 'vertical',
                                             overflow: 'hidden',
                                             fontSize: '0.85rem'
                                         }}
                                     >
-                                        {post.excerpt || post.content.substring(0, 120) + '...'}
+                                        {post.excerpt || (post.content && post.content.length > 250 
+                                            ? post.content.substring(0, 250) + '...' 
+                                            : post.content || 'No content available')}
                                     </Typography>
+                                    
+                                    {/* Temporary debug - remove after testing */}
+                                    <Typography variant="caption" sx={{ color: '#999', fontSize: '0.7rem', display: 'block', mt: 0.5 }}>
+                                        Content length: {post.content?.length || 0} | 
+                                        Has excerpt: {post.excerpt ? 'Yes' : 'No'}
+                                    </Typography>
+                                    
+
 
                                     {/* Tags */}
                                     {post.tags && post.tags.length > 0 && (
@@ -394,6 +442,7 @@ const Blog = () => {
                                                         : 'rgba(108, 117, 125, 0.1)'
                                                 }
                                             }}
+                                            onClick={() => handleReadMore(post)}
                                         >
                                             Read More &gt;&gt;
                                         </Button>
@@ -425,13 +474,16 @@ const Blog = () => {
                 </Box>
 
                 {/* No Posts Message */}
-                {blogPosts.length === 0 && (
+                {blogPosts.length === 0 && !loading && (
                     <Box sx={{ textAlign: 'center', py: 8 }}>
                         <Typography variant="h6" sx={{ color: '#6c757d', mb: 2 }}>
                             No blog posts available at the moment
                         </Typography>
-                        <Typography variant="body2" sx={{ color: '#6c757d' }}>
+                        <Typography variant="body2" sx={{ color: '#6c757d', mb: 3 }}>
                             Check back soon for our latest articles and recipes!
+                        </Typography>
+                        <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.9rem' }}>
+                            (Admin can create blog posts from the admin dashboard)
                         </Typography>
                     </Box>
                 )}
@@ -487,6 +539,74 @@ const Blog = () => {
                     </Box>
                 )}
             </Box>
+
+            {/* Blog Post Dialog */}
+            {selectedPost && (
+                <Dialog open={dialogOpen} onClose={handleCloseDialog} maxWidth="md" fullWidth>
+                    <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h6" sx={{ fontWeight: 700 }}>{selectedPost.title}</Typography>
+                        <IconButton onClick={handleCloseDialog} sx={{ color: '#6c757d' }}>
+                            <CloseIcon />
+                        </IconButton>
+                    </DialogTitle>
+                    <DialogContent dividers>
+                        <Box sx={{ position: 'relative', mb: 2 }}>
+                            <CardMedia
+                                component="img"
+                                height="300"
+                                image={selectedPost.image ? `http://localhost:5000/uploads/${selectedPost.image}` : '/default-blog.jpg'}
+                                alt={selectedPost.title}
+                                sx={{ objectFit: 'cover', borderRadius: 2 }}
+                            />
+                            <Box sx={{
+                                position: 'absolute',
+                                bottom: 10,
+                                left: 10,
+                                backgroundColor: 'rgba(0,0,0,0.5)',
+                                color: 'white',
+                                padding: '5px 10px',
+                                borderRadius: 2,
+                                fontSize: '0.8rem'
+                            }}>
+                                {formatDate(selectedPost.createdAt)}
+                            </Box>
+                        </Box>
+                        <Typography variant="h5" sx={{ fontWeight: 700, mb: 2 }}>{selectedPost.title}</Typography>
+                        <Typography variant="body1" sx={{ mb: 2, lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                            {selectedPost.content}
+                        </Typography>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 'auto' }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <VisibilityIcon sx={{ fontSize: 18, color: '#6c757d' }} />
+                                <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.8rem' }}>
+                                    {selectedPost.views || 0} views
+                                </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <CommentIcon sx={{ fontSize: 18, color: '#6c757d' }} />
+                                <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.8rem' }}>
+                                    {selectedPost.commentCount || 0} comments
+                                </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                <PersonIcon sx={{ fontSize: 18, color: '#6c757d' }} />
+                                <Typography variant="body2" sx={{ color: '#6c757d', fontSize: '0.8rem' }}>
+                                    By {selectedPost.author?.name || 'Admin'}
+                                </Typography>
+                            </Box>
+                        </Box>
+                        
+                        {/* Comments Section */}
+                        <Divider sx={{ my: 3 }} />
+                        <CommentSection blogId={selectedPost._id} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </Box>
     );
 };

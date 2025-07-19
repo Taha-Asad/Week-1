@@ -2,6 +2,10 @@ const Admin = require("../models/admin.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Reservation = require("../models/reservation.js");
+const Menu = require("../models/menu.js");
+const Blog = require("../models/blog.js");
+const Contact = require("../models/contact.js");
+const Comment = require("../models/comment.js");
 const fs = require("fs");
 const path = require("path");
 const ejs = require("ejs");
@@ -90,7 +94,7 @@ const getDashboardStats = async (req, res) => {
       };
     }
 
-    // Get counts
+    // Get reservation counts
     const totalReservation = await Reservation.countDocuments(dateFilter);
     const approvedStats = await Reservation.countDocuments({
       ...dateFilter,
@@ -109,6 +113,30 @@ const getDashboardStats = async (req, res) => {
     const upcoming = await Reservation.countDocuments({
       date: { $gt: new Date() },
     });
+
+    // Get blog counts
+    const totalBlogs = await Blog.countDocuments();
+    const publishedBlogs = await Blog.countDocuments({ 
+      status: "published" 
+    });
+    const draftBlogs = await Blog.countDocuments({ 
+      status: "draft" 
+    });
+    const archivedBlogs = await Blog.countDocuments({ 
+      status: "archived" 
+    });
+
+    // Get contact counts
+    const totalContacts = await Contact.countDocuments();
+    const unreadContacts = await Contact.countDocuments({ status: "unread" });
+    const readContacts = await Contact.countDocuments({ status: "read" });
+    const repliedContacts = await Contact.countDocuments({ status: "replied" });
+
+    // Get comment counts
+    const totalComments = await Comment.countDocuments();
+    const approvedComments = await Comment.countDocuments({ status: "approved" });
+    const pendingComments = await Comment.countDocuments({ status: "pending" });
+    const rejectedComments = await Comment.countDocuments({ status: "rejected" });
 
     // Generate trend data (example for month)
     const trendData = await Reservation.aggregate([
@@ -141,6 +169,18 @@ const getDashboardStats = async (req, res) => {
         rejectedStats,
         pendingStats,
         upcoming,
+        totalBlogs,
+        publishedBlogs,
+        draftBlogs,
+        archivedBlogs,
+        totalContacts,
+        unreadContacts,
+        readContacts,
+        repliedContacts,
+        totalComments,
+        approvedComments,
+        pendingComments,
+        rejectedComments,
       },
       reservationTrend: trendData,
     });

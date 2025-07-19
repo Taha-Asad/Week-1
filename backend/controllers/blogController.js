@@ -1,5 +1,6 @@
 const Blog = require("../models/blog.js");
 const Admin = require("../models/admin.js");
+const Comment = require("../models/comment.js");
 const fs = require("fs");
 const path = require("path");
 
@@ -84,11 +85,26 @@ const getAllBlogPosts = async (req, res) => {
       .skip((page - 1) * limit)
       .exec();
 
+    // Get comment counts for each blog
+    const blogsWithComments = await Promise.all(
+      blogs.map(async (blog) => {
+        const commentCount = await Comment.countDocuments({ 
+          blogId: blog._id,
+          status: "approved" // Only count approved comments
+        });
+        
+        return {
+          ...blog.toObject(),
+          commentCount
+        };
+      })
+    );
+
     const total = await Blog.countDocuments(query);
 
     res.status(200).json({
       success: true,
-      blogs,
+      blogs: blogsWithComments,
       totalPages: Math.ceil(total / limit),
       currentPage: page,
       total,
@@ -130,11 +146,26 @@ const getPublicBlogPosts = async (req, res) => {
       .skip((page - 1) * limit)
       .exec();
 
+    // Get comment counts for each blog
+    const blogsWithComments = await Promise.all(
+      blogs.map(async (blog) => {
+        const commentCount = await Comment.countDocuments({ 
+          blogId: blog._id,
+          status: "approved" // Only count approved comments for public view
+        });
+        
+        return {
+          ...blog.toObject(),
+          commentCount
+        };
+      })
+    );
+
     const total = await Blog.countDocuments(query);
 
     res.status(200).json({
       success: true,
-      blogs,
+      blogs: blogsWithComments,
       totalPages: Math.ceil(total / limit),
       currentPage: page,
       total,
@@ -172,6 +203,37 @@ const getBlogPost = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching blog post:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Increment blog post views (for tracking views from frontend)
+const incrementBlogViews = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const blog = await Blog.findById(id);
+    
+    if (!blog) {
+      return res.status(404).json({
+        success: false,
+        message: "Blog post not found",
+      });
+    }
+
+    // Increment views
+    blog.views += 1;
+    await blog.save();
+
+    res.status(200).json({
+      success: true,
+      views: blog.views,
+    });
+  } catch (error) {
+    console.error("Error incrementing blog views:", error);
     res.status(500).json({
       success: false,
       message: error.message,
@@ -414,6 +476,14 @@ const getBlogStats = async (req, res) => {
       { $group: { _id: null, totalViews: { $sum: "$views" } } }
     ]);
 
+    // Get total comments for all blogs by this admin
+    const adminBlogs = await Blog.find({ author: req.adminId }).select('_id');
+    const blogIds = adminBlogs.map(blog => blog._id);
+    const totalComments = await Comment.countDocuments({ 
+      blogId: { $in: blogIds },
+      status: "approved" // Only count approved comments
+    });
+
     res.status(200).json({
       success: true,
       stats: {
@@ -421,6 +491,7 @@ const getBlogStats = async (req, res) => {
         publishedPosts,
         draftPosts,
         totalViews: totalViews[0]?.totalViews || 0,
+        totalComments,
       },
     });
   } catch (error) {
@@ -437,6 +508,7 @@ module.exports = {
   getAllBlogPosts,
   getPublicBlogPosts,
   getBlogPost,
+  incrementBlogViews,
   updateBlogPost,
   deleteBlogPost,
   bulkDeleteBlogPosts,

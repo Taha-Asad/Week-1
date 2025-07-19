@@ -13,6 +13,7 @@ import StatsPage from "./components/admin/StatsPage";
 import SettingsPage from "./components/admin/SettingsPage";
 import BlogPage from "./components/admin/BlogPage";
 import ContactPage from "./components/admin/ContactPage";
+import CommentManagement from "./components/admin/CommentManagement";
 import ProtectedRoute from "./components/admin/protectedRoutes";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           <Route path="menu" element={<MenuPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="comments" element={<CommentManagement />} />
           <Route path="stats" element={<StatsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>

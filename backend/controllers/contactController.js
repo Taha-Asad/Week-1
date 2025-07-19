@@ -198,10 +198,19 @@ const replyToContact = async (req, res) => {
             });
         }
 
+        // Get admin details from database
+        const admin = await Admin.findById(req.adminId);
+        if (!admin) {
+            return res.status(404).json({
+                success: false,
+                message: 'Admin not found'
+            });
+        }
+
         contact.adminReply = adminReply;
         contact.status = 'replied';
         contact.repliedAt = new Date();
-        contact.repliedBy = req.admin._id;
+        contact.repliedBy = req.adminId;
         await contact.save();
 
         // Send reply email to user
@@ -211,8 +220,9 @@ const replyToContact = async (req, res) => {
                 subject: contact.subject,
                 message: contact.message,
                 adminReply: adminReply,
-                repliedBy: req.admin.name || 'Admin',
-                repliedAt: new Date().toLocaleString()
+                repliedBy: admin.name || 'Admin',
+                repliedAt: new Date().toLocaleString(),
+                submissionTime: contact.createdAt.toLocaleString()
             });
         } catch (replyEmailError) {
             console.error('Reply email sending failed:', replyEmailError);
@@ -221,17 +231,18 @@ const replyToContact = async (req, res) => {
 
         // Send copy to admin for record keeping
         try {
-            const adminEmail = req.admin.email;
+            const adminEmail = admin.email;
             if (adminEmail) {
                 await SendEmail(adminEmail, `Reply Sent - ${contact.subject}`, 'contactReceived', {
-                    adminName: req.admin.name || 'Admin',
+                    adminName: admin.name || 'Admin',
                     contactName: contact.name,
                     contactEmail: contact.email,
                     contactSubject: contact.subject,
                     contactMessage: contact.message,
                     adminReply: adminReply,
-                    repliedBy: req.admin.name || 'Admin',
-                    repliedAt: new Date().toLocaleString()
+                    repliedBy: admin.name || 'Admin',
+                    repliedAt: new Date().toLocaleString(),
+                    submissionTime: contact.createdAt.toLocaleString()
                 });
             }
         } catch (adminCopyError) {

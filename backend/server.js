@@ -24,6 +24,7 @@ const adminRouter = require("./routes/adminRoutes.js");
 const blogRouter = require("./routes/blogRoutes.js");
 const publicBlogRouter = require("./routes/publicBlogRoutes.js");
 const contactRouter = require("./routes/contactRoutes.js");
+const commentRouter = require("./routes/commentRoutes.js");
 
 // Admin Main Routes
 
@@ -53,6 +54,10 @@ app.use("/api/v1/blog", publicBlogRouter);
 // Contact Routes
 app.use("/api/v1/contact", contactRouter);
 app.use("/api/v1/admin/contact", contactRouter);
+
+// Comment Routes
+app.use("/api/v1/comments", commentRouter);
+app.use("/api/v1/admin/comments", commentRouter);
 connectDB();
 app.listen(PORT, () => {
   console.log(`Server is running on Port: ${PORT} `.blue.underline.bgGreen);

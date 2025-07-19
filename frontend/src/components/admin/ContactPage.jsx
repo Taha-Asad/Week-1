@@ -42,6 +42,7 @@ import {
     Error as ErrorIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ContactPage = () => {
     const [contacts, setContacts] = useState([]);
@@ -130,9 +131,12 @@ const ContactPage = () => {
             setSelectedContact(null);
             fetchContacts();
             fetchStats();
+            
+            // Show success notification
+            toast.success(`Reply sent successfully to ${selectedContact.name}! They will receive an email notification.`);
         } catch (error) {
             console.error('Error sending reply:', error);
-            setError('Failed to send reply');
+            toast.error('Failed to send reply. Please try again.');
         }
     };
 
@@ -148,9 +152,10 @@ const ContactPage = () => {
 
             fetchContacts();
             fetchStats();
+            toast.success('Contact status updated successfully!');
         } catch (error) {
             console.error('Error updating status:', error);
-            setError('Failed to update status');
+            toast.error('Failed to update status');
         }
     };
 
@@ -166,9 +171,10 @@ const ContactPage = () => {
 
             fetchContacts();
             fetchStats();
+            toast.success('Contact deleted successfully!');
         } catch (error) {
             console.error('Error deleting contact:', error);
-            setError('Failed to delete contact');
+            toast.error('Failed to delete contact');
         }
     };
 
@@ -186,9 +192,10 @@ const ContactPage = () => {
             setSelectedContacts([]);
             fetchContacts();
             fetchStats();
+            toast.success(`${selectedContacts.length} contacts deleted successfully!`);
         } catch (error) {
             console.error('Error bulk deleting contacts:', error);
-            setError('Failed to delete contacts');
+            toast.error('Failed to delete contacts');
         }
     };
 
@@ -229,13 +236,18 @@ const ContactPage = () => {
     };
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Typography variant="h4" color="#6F4E37" sx={{ mb: 3, fontWeight: 600 }}>
+        <Box sx={{ 
+            p: 3, 
+            minHeight: '100vh',
+            backgroundColor: '#121212',
+            color: '#fff'
+        }}>
+            <Typography variant="h4" color="#fff" sx={{ mb: 3, fontWeight: 600 }}>
                 Contact Management
             </Typography>
 
             {error && (
-                <Alert severity="error" sx={{ mb: 3 }}>
+                <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
                     {error}
                 </Alert>
             )}
@@ -243,7 +255,16 @@ const ContactPage = () => {
             {/* Stats Cards */}
             <Grid container spacing={3} sx={{ mb: 4 }}>
                 <Grid item xs={12} sm={6} md={3}>
-                    <Card sx={{ background: 'linear-gradient(135deg, #6F4E37 0%, #8B7355 100%)', color: 'white' }}>
+                    <Card sx={{ 
+                        background: 'linear-gradient(135deg, #6F4E37 0%, #8B7355 100%)', 
+                        color: 'white',
+                        boxShadow: '0 8px 25px rgba(111, 78, 55, 0.3)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                            transform: 'translateY(-5px)',
+                            boxShadow: '0 12px 35px rgba(111, 78, 55, 0.4)'
+                        }
+                    }}>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
@@ -259,7 +280,16 @@ const ContactPage = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
-                    <Card sx={{ background: 'linear-gradient(135deg, #dc3545 0%, #e74c3c 100%)', color: 'white' }}>
+                    <Card sx={{ 
+                        background: 'linear-gradient(135deg, #dc3545 0%, #e74c3c 100%)', 
+                        color: 'white',
+                        boxShadow: '0 8px 25px rgba(220, 53, 69, 0.3)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                            transform: 'translateY(-5px)',
+                            boxShadow: '0 12px 35px rgba(220, 53, 69, 0.4)'
+                        }
+                    }}>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
@@ -275,7 +305,16 @@ const ContactPage = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
-                    <Card sx={{ background: 'linear-gradient(135deg, #ffc107 0%, #f39c12 100%)', color: 'white' }}>
+                    <Card sx={{ 
+                        background: 'linear-gradient(135deg, #ffc107 0%, #f39c12 100%)', 
+                        color: 'white',
+                        boxShadow: '0 8px 25px rgba(255, 193, 7, 0.3)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                            transform: 'translateY(-5px)',
+                            boxShadow: '0 12px 35px rgba(255, 193, 7, 0.4)'
+                        }
+                    }}>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
@@ -291,7 +330,16 @@ const ContactPage = () => {
                 </Grid>
 
                 <Grid item xs={12} sm={6} md={3}>
-                    <Card sx={{ background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)', color: 'white' }}>
+                    <Card sx={{ 
+                        background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)', 
+                        color: 'white',
+                        boxShadow: '0 8px 25px rgba(40, 167, 69, 0.3)',
+                        transition: 'transform 0.3s ease',
+                        '&:hover': {
+                            transform: 'translateY(-5px)',
+                            boxShadow: '0 12px 35px rgba(40, 167, 69, 0.4)'
+                        }
+                    }}>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Box>
@@ -308,7 +356,14 @@ const ContactPage = () => {
             </Grid>
 
             {/* Filters and Actions */}
-            <Paper sx={{ p: 3, mb: 3 }}>
+            <Paper sx={{ 
+                p: 3, 
+                mb: 3, 
+                borderRadius: 3,
+                background: '#1e1e1e',
+                border: '1px solid #2d2d2d',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} sm={4}>
                         <TextField
@@ -317,15 +372,54 @@ const ContactPage = () => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             size="small"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    borderRadius: 2,
+                                    backgroundColor: '#2d2d2d',
+                                    color: '#fff',
+                                    '& fieldset': {
+                                        borderColor: '#444'
+                                    },
+                                    '&:hover fieldset': {
+                                        borderColor: '#666'
+                                    },
+                                    '&.Mui-focused fieldset': {
+                                        borderColor: '#6F4E37'
+                                    }
+                                },
+                                '& .MuiInputLabel-root': {
+                                    color: '#ccc',
+                                    '&.Mui-focused': {
+                                        color: '#6F4E37'
+                                    }
+                                }
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={3}>
                         <FormControl fullWidth size="small">
-                            <InputLabel>Status</InputLabel>
+                            <InputLabel sx={{ color: '#ccc' }}>Status</InputLabel>
                             <Select
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
                                 label="Status"
+                                sx={{
+                                    borderRadius: 2,
+                                    backgroundColor: '#2d2d2d',
+                                    color: '#fff',
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#444'
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#666'
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: '#6F4E37'
+                                    },
+                                    '& .MuiSvgIcon-root': {
+                                        color: '#ccc'
+                                    }
+                                }}
                             >
                                 <MenuItem value="all">All</MenuItem>
                                 <MenuItem value="unread">Unread</MenuItem>
@@ -342,6 +436,15 @@ const ContactPage = () => {
                                     color="error"
                                     onClick={handleBulkDelete}
                                     startIcon={<DeleteIcon />}
+                                    sx={{
+                                        borderRadius: 2,
+                                        borderColor: '#dc3545',
+                                        color: '#dc3545',
+                                        '&:hover': {
+                                            borderColor: '#c82333',
+                                            backgroundColor: 'rgba(220, 53, 69, 0.1)'
+                                        }
+                                    }}
                                 >
                                     Delete Selected ({selectedContacts.length})
                                 </Button>
@@ -352,12 +455,19 @@ const ContactPage = () => {
             </Paper>
 
             {/* Contacts Table */}
-            <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <Paper sx={{ 
+                width: '100%', 
+                overflow: 'hidden',
+                borderRadius: 3,
+                background: '#1e1e1e',
+                border: '1px solid #2d2d2d',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3)'
+            }}>
                 <TableContainer>
                     <Table>
                         <TableHead>
-                            <TableRow sx={{ backgroundColor: '#f8f9fa' }}>
-                                <TableCell padding="checkbox">
+                            <TableRow sx={{ backgroundColor: '#2d2d2d' }}>
+                                <TableCell padding="checkbox" sx={{ color: '#fff', borderBottom: '1px solid #444' }}>
                                     <Checkbox
                                         checked={selectedContacts.length === contacts.length && contacts.length > 0}
                                         indeterminate={selectedContacts.length > 0 && selectedContacts.length < contacts.length}
@@ -368,33 +478,59 @@ const ContactPage = () => {
                                                 setSelectedContacts([]);
                                             }
                                         }}
+                                        sx={{
+                                            color: '#6F4E37',
+                                            '&.Mui-checked': {
+                                                color: '#6F4E37'
+                                            }
+                                        }}
                                     />
                                 </TableCell>
-                                <TableCell><strong>Name</strong></TableCell>
-                                <TableCell><strong>Email</strong></TableCell>
-                                <TableCell><strong>Subject</strong></TableCell>
-                                <TableCell><strong>Status</strong></TableCell>
-                                <TableCell><strong>Date</strong></TableCell>
-                                <TableCell><strong>Actions</strong></TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Name</strong>
+                                </TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Email</strong>
+                                </TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Subject</strong>
+                                </TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Status</strong>
+                                </TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Date</strong>
+                                </TableCell>
+                                <TableCell sx={{ color: '#fff', borderBottom: '1px solid #444', fontWeight: 600 }}>
+                                    <strong>Actions</strong>
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {loading ? (
                                 <TableRow>
-                                    <TableCell colSpan={7} align="center">
+                                    <TableCell colSpan={7} align="center" sx={{ color: '#fff' }}>
                                         <CircularProgress />
                                     </TableCell>
                                 </TableRow>
                             ) : contacts.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={7} align="center">
+                                    <TableCell colSpan={7} align="center" sx={{ color: '#ccc' }}>
                                         No contacts found
                                     </TableCell>
                                 </TableRow>
                             ) : (
                                 contacts.map((contact) => (
-                                    <TableRow key={contact._id} hover>
-                                        <TableCell padding="checkbox">
+                                    <TableRow key={contact._id} hover sx={{ 
+                                        '&:hover': { 
+                                            backgroundColor: '#2d2d2d' 
+                                        },
+                                        '& .MuiTableCell-root': {
+                                            borderBottom: '1px solid #444',
+                                            color: '#fff'
+                                        }
+                                    }}>
+                                        <TableCell padding="checkbox" sx={{ color: '#fff' }}>
                                             <Checkbox
                                                 checked={selectedContacts.includes(contact._id)}
                                                 onChange={(e) => {
@@ -404,36 +540,53 @@ const ContactPage = () => {
                                                         setSelectedContacts(selectedContacts.filter(id => id !== contact._id));
                                                     }
                                                 }}
+                                                sx={{
+                                                    color: '#6F4E37',
+                                                    '&.Mui-checked': {
+                                                        color: '#6F4E37'
+                                                    }
+                                                }}
                                             />
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell sx={{ color: '#fff' }}>
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                 <PersonIcon sx={{ color: '#6F4E37', fontSize: 20 }} />
                                                 {contact.name}
                                             </Box>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell sx={{ color: '#ccc' }}>
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                                                 <EmailIcon sx={{ color: '#6F4E37', fontSize: 20 }} />
                                                 {contact.email}
                                             </Box>
                                         </TableCell>
-                                        <TableCell>{contact.subject}</TableCell>
+                                        <TableCell sx={{ color: '#fff' }}>{contact.subject}</TableCell>
                                         <TableCell>
                                             <Chip
                                                 icon={getStatusIcon(contact.status)}
                                                 label={contact.status}
                                                 color={getStatusColor(contact.status)}
                                                 size="small"
+                                                sx={{
+                                                    fontWeight: 600,
+                                                    '& .MuiChip-label': {
+                                                        color: '#fff'
+                                                    }
+                                                }}
                                             />
                                         </TableCell>
-                                        <TableCell>{formatDate(contact.createdAt)}</TableCell>
+                                        <TableCell sx={{ color: '#ccc' }}>{formatDate(contact.createdAt)}</TableCell>
                                         <TableCell>
                                             <Box sx={{ display: 'flex', gap: 1 }}>
                                                 <IconButton
                                                     size="small"
                                                     onClick={() => handleViewContact(contact._id)}
-                                                    sx={{ color: '#6F4E37' }}
+                                                    sx={{ 
+                                                        color: '#6F4E37',
+                                                        '&:hover': {
+                                                            backgroundColor: 'rgba(111, 78, 55, 0.1)'
+                                                        }
+                                                    }}
                                                 >
                                                     <VisibilityIcon />
                                                 </IconButton>
@@ -444,7 +597,12 @@ const ContactPage = () => {
                                                             setSelectedContact(contact);
                                                             setReplyDialogOpen(true);
                                                         }}
-                                                        sx={{ color: '#28a745' }}
+                                                        sx={{ 
+                                                            color: '#28a745',
+                                                            '&:hover': {
+                                                                backgroundColor: 'rgba(40, 167, 69, 0.1)'
+                                                            }
+                                                        }}
                                                     >
                                                         <ReplyIcon />
                                                     </IconButton>
@@ -452,7 +610,12 @@ const ContactPage = () => {
                                                 <IconButton
                                                     size="small"
                                                     onClick={() => handleDeleteContact(contact._id)}
-                                                    sx={{ color: '#dc3545' }}
+                                                    sx={{ 
+                                                        color: '#dc3545',
+                                                        '&:hover': {
+                                                            backgroundColor: 'rgba(220, 53, 69, 0.1)'
+                                                        }
+                                                    }}
                                                 >
                                                     <DeleteIcon />
                                                 </IconButton>
@@ -474,6 +637,18 @@ const ContactPage = () => {
                     onRowsPerPageChange={(event) => {
                         setRowsPerPage(parseInt(event.target.value, 10));
                         setPage(0);
+                    }}
+                    sx={{
+                        color: '#fff',
+                        '& .MuiTablePagination-select': {
+                            color: '#fff'
+                        },
+                        '& .MuiTablePagination-selectIcon': {
+                            color: '#ccc'
+                        },
+                        '& .MuiTablePagination-actions': {
+                            color: '#ccc'
+                        }
                     }}
                 />
             </Paper>

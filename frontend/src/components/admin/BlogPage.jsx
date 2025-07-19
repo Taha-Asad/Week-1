@@ -207,6 +207,14 @@ const BlogPage = () => {
             </CardContent>
           </Card>
         </Grid>
+        <Grid item xs={12} sm={6} md={3}>
+          <Card sx={{ backgroundColor: '#1e1e1e', color: '#fff' }}>
+            <CardContent>
+              <Typography variant="h6" color="primary.main">Total Comments</Typography>
+              <Typography variant="h4">{stats.totalComments || 0}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
 
       {/* Filter Controls */}
@@ -314,7 +322,7 @@ const BlogPage = () => {
                     ))}
                   </Box>
                   <Typography variant="caption" color="#909090">
-                    {post.readTime} min read • {post.views} views
+                    {post.readTime} min read • {post.views} views • {post.commentCount || 0} comments
                   </Typography>
                 </CardContent>
                 <CardActions>

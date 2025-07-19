@@ -14,6 +14,7 @@ import {
   Logout as LogoutIcon,
   Article as BlogIcon,
   Email as ContactIcon,
+  Comment as CommentIcon,
 } from '@mui/icons-material';
 
 const drawerWidth = 240;
@@ -39,6 +40,7 @@ const AdminLayout = () => {
     { text: 'Menu', icon: <MenuIcon />, path: '/admin-dashboard/menu' },
     { text: 'Blog', icon: <BlogIcon />, path: '/admin-dashboard/blog' },
     { text: 'Contact', icon: <ContactIcon />, path: '/admin-dashboard/contact' },
+    { text: 'Comments', icon: <CommentIcon />, path: '/admin-dashboard/comments' },
     { text: 'Statistics', icon: <StatsIcon />, path: '/admin-dashboard/stats' },
     { text: 'Settings', icon: <SettingsIcon />, path: '/admin-dashboard/settings' },
   ];
