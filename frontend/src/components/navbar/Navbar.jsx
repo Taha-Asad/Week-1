@@ -103,8 +103,6 @@ const Navbar = () => {
 
   return (
     <>
-
-
       <Box
         sx={{
           width: isOpen ? (isMobile ? '100vw' : '400px') : '0',
