@@ -117,7 +117,7 @@ const postReservation = async (req, res) => {
 };
 const reservationApproval = async (req, res) => {
   try {
-    const { _id } = req.params;
+    const { id } = req.params;
     const { status, note } = req.body;
     const reservation = await Reservation.findById({
       _id,

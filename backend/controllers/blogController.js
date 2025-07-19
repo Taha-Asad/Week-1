@@ -182,9 +182,9 @@ const getPublicBlogPosts = async (req, res) => {
 // Get single blog post
 const getBlogPost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     
-    const blog = await Blog.findById(id).populate("author", "name");
+    const blog = await Blog.findById(postId).populate("author", "name");
     
     if (!blog) {
       return res.status(404).json({
@@ -213,9 +213,9 @@ const getBlogPost = async (req, res) => {
 // Increment blog post views (for tracking views from frontend)
 const incrementBlogViews = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(postId);
     
     if (!blog) {
       return res.status(404).json({
@@ -244,10 +244,10 @@ const incrementBlogViews = async (req, res) => {
 // Update blog post
 const updateBlogPost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     const { title, content, excerpt, tags, status, featured } = req.body;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(postId);
     
     if (!blog) {
       return res.status(404).json({
@@ -291,7 +291,7 @@ const updateBlogPost = async (req, res) => {
     }
 
     const updatedBlog = await Blog.findByIdAndUpdate(
-      id,
+      postId,
       updateData,
       { new: true, runValidators: true }
     ).populate("author", "name");
@@ -313,9 +313,9 @@ const updateBlogPost = async (req, res) => {
 // Delete blog post
 const deleteBlogPost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(postId);
     
     if (!blog) {
       return res.status(404).json({
@@ -341,7 +341,7 @@ const deleteBlogPost = async (req, res) => {
       }
     }
 
-    await Blog.findByIdAndDelete(id);
+    await Blog.findByIdAndDelete(postId);
 
     res.status(200).json({
       success: true,
@@ -401,10 +401,10 @@ const bulkDeleteBlogPosts = async (req, res) => {
 // Toggle blog post status
 const toggleBlogStatus = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     const { status } = req.body;
 
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(postId);
     
     if (!blog) {
       return res.status(404).json({

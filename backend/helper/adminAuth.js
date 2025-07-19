@@ -9,6 +9,10 @@ const adminAuth = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.adminId = decoded.adminId;
+
+    console.log('Path in middleware:', req.path);
+
+
     next();
   } catch (error) {
     return res.status(401).json({ success: false, message: error.message });

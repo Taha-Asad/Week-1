@@ -8,7 +8,7 @@ const {
 
 // Public blog routes (no authentication required)
 router.get("/posts", getPublicBlogPosts);
-router.get("/post/:id", getBlogPost);
-router.post("/post/:id/view", incrementBlogViews);
+router.get("/post/:postId", getBlogPost);
+router.post("/post/:postId/view", incrementBlogViews);
 
 module.exports = router; 
