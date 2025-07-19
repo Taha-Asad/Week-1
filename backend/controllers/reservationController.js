@@ -119,9 +119,9 @@ const reservationApproval = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, note } = req.body;
-    const reservation = await Reservation.findById({
-      _id,
-    });
+    const reservation = await Reservation.findById(
+      id,
+    );
     if (!reservation) {
       return res
         .status(404)

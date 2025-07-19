@@ -120,19 +120,20 @@ const Contact = () => {
                     </Typography>
                 </Box>
 
-                <Grid container spacing={6}>
+                <Grid container spacing={6} direction={{ xs: 'column', sm: 'row' }}>
                     {/* Contact Information */}
-                    <Grid item xs={12} md={6} sx={{ width: '35%' }}>
+                    <Grid item xs={12} sm={6} md={6} sx={{ width: { xs: '100%', sm: '35%' }, flexBasis: { sm: '35%' }, maxWidth: { sm: '35%' } }}>
                         <Paper
                             elevation={0}
                             sx={{
-                                background: 'rgba(255, 255, 255, 0.95)',
                                 backdropFilter: 'blur(10px)',
                                 border: '1px solid rgba(255, 255, 255, 0.3)',
                                 borderRadius: 3,
                                 p: 4,
                                 boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-                                height: '100%'
+                                height: '100%',
+                                width: '100%',
+                                mb: { xs: 4, sm: 0 }
                             }}
                         >
                             <Typography variant="h5" color="#6F4E37" sx={{ mb: 3, fontWeight: 600 }}>
@@ -228,7 +229,7 @@ const Contact = () => {
                             </Box>
                         </Paper>
                     </Grid>
-                    <Grid item xs={12} md={6} sx={{ width: '60%' }}>
+                    <Grid item xs={12} sm={6} md={6} sx={{ width: { xs: '100%', sm: '60%' }, flexBasis: { sm: '60%' }, maxWidth: { sm: '60%' } }}>
                         <Paper
                             elevation={0}
                             sx={{
@@ -241,6 +242,8 @@ const Contact = () => {
                                 position: 'relative',
                                 overflow: 'hidden',
                                 height: '100%',
+                                width: '100%',
+                                mb: { xs: 4, sm: 0 },
                                 '&::before': {
                                     content: '""',
                                     position: 'absolute',

@@ -116,7 +116,7 @@ const Footer = () => {
                                         </Box>
                                     </Grid>
 
-                                    <Grid item size={{ xs:12 ,sm:4 ,md:4}}>
+                                    <Grid item xs={12} sm={4} md={4}>
                                         <Box sx={{
                                             display: 'flex',
                                             flexDirection: 'row',
@@ -187,18 +187,19 @@ const Footer = () => {
                         <Grid item xs={12} sm={6} md={6}>
                             <Box
                                 sx={{
-                                    position: "absolute",
-                                    top: { xs: "unset", md: "20%" },
-                                    right: { xs: "unset", md: "0-2rem" },
-                                    transform: { xs: "none", md: "translateY(-50%)" },
-                                    width: { xs: "100%", md: "30%" },
+                                    position: { xs: 'static', md: 'absolute' },
+                                    top: { xs: 'unset', md: '20%' },
+                                    right: { xs: 'unset', md: 0 },
+                                    transform: { xs: 'none', md: 'translateY(-50%)' },
+                                    width: { xs: '100%', md: '30%' },
                                     backgroundImage: `url(${bgSmallImage})`,
                                     backgroundSize: "cover",
                                     backgroundPosition: "center",
                                     backgroundRepeat: "no-repeat",
                                     border: "1px solid white",
-                                    padding: "2rem",
+                                    padding: { xs: '1rem', md: '2rem' },
                                     zIndex: 10,
+                                    mt: { xs: 4, md: 0 }
                                 }}
                             >
                                 <Container sx={{ border: '1px solid white' }}>

@@ -103,13 +103,13 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Sidebar */}
+
+
       <Box
         sx={{
           width: isOpen ? (isMobile ? '100vw' : '400px') : '0',
           height: '100vh',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(20px)',
+          background: 'rgba(34,34,34,0.97)', // solid dark background
           position: 'fixed',
           left: 0,
           top: 0,
@@ -150,10 +150,10 @@ const Navbar = () => {
           >
             {/* Menu Header */}
             <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <Typography
+            <Typography
                 variant="h4"
-                sx={{
-                  fontWeight: 'bold',
+              sx={{
+                fontWeight: 'bold',
                   fontSize: isMobile ? '1.8rem' : '2.2rem',
                   fontFamily: "'Rancho', cursive",
                   textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
@@ -170,7 +170,7 @@ const Navbar = () => {
                 }}
               >
                 Experience the Taste of Bliss
-              </Typography>
+            </Typography>
             </Box>
 
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.2)', mb: 3 }} />
@@ -214,14 +214,15 @@ const Navbar = () => {
                       }}>
                         {item.icon}
                       </Box>
-                      <ListItemText
+                    <ListItemText
                         primary={item.text}
-                        primaryTypographyProps={{
-                          fontWeight: 'medium',
+                      primaryTypographyProps={{
+                        fontWeight: 'medium',
                           fontSize: isMobile ? '1.1rem' : '1.2rem',
+                          color: '#fff',
                           transition: 'color 0.3s ease'
-                        }}
-                      />
+                      }}
+                    />
                     </Box>
                   </ListItem>
                 </React.Fragment>
@@ -265,23 +266,23 @@ const Navbar = () => {
               >
                 {socialLinks.map((social, i) => (
                   <Tooltip key={i} title={`Follow us on ${social.text || 'social media'}`}>
-                    <IconButton
+                  <IconButton
                       onClick={() => handleSocialClick(social.url)}
-                      sx={{
-                        bgcolor: 'rgba(255, 255, 255, 0.1)',
-                        color: 'white',
+                    sx={{
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      color: 'white',
                         width: 45,
                         height: 45,
-                        '&:hover': {
-                          bgcolor: social.color,
+                      '&:hover': {
+                        bgcolor: social.color,
                           transform: 'scale(1.1) rotate(5deg)',
                           boxShadow: `0 4px 15px ${social.color}40`
-                        },
+                      },
                         transition: 'all 0.3s ease'
-                      }}
-                    >
-                      {social.icon}
-                    </IconButton>
+                    }}
+                  >
+                    {social.icon}
+                  </IconButton>
                   </Tooltip>
                 ))}
               </Box>

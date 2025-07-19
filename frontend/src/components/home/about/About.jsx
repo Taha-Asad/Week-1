@@ -57,35 +57,42 @@ const About = () => {
                     >
                         Our Story
                     </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item size={{ xs: 12, sm: 6, md: 6 }}>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            width: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: 4,
+                            mb: 4
+                        }}
+                    >
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, minWidth: 0 }}>
                             <img
                                 src={AboutImage}
                                 alt="About"
-                                style={{ width: '100%', maxWidth: '800px', height: 'auto' }}
+                                style={{ width: '100%', maxWidth: '800px', height: 'auto', borderRadius: 16 }}
                             />
-                        </Grid>
-
-                        <Grid item size={{ xs: 12, sm: 6, md: 6 }}>
-                            <Box>
-                                <Typography variant="h6" fontWeight={700}>
-                                    WE HAVE THE GLORY BEGINNING IN RESTAURANT BUSINESS WITH SOME
-                                    UNIQUE FEATURES.
-                                </Typography>
-                                <Typography variant='body1' color='#616f7d' m={'10px 0'}>
-                                    <strong>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
-                                    </strong>
-                                </Typography>
-                            </Box>
-                            <Grid container spacing={7} sx={{ marginTop: "70px", marginLeft:{xs: '100px' , sm: '100px' , md: '40px'} }}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, minWidth: 0, p: { xs: 0, sm: 2 } }}>
+                            <Typography variant="h6" fontWeight={700}>
+                                WE HAVE THE GLORY BEGINNING IN RESTAURANT BUSINESS WITH SOME UNIQUE FEATURES.
+                            </Typography>
+                            <Typography variant='body1' color='#616f7d' m={'10px 0'}>
+                                <strong>
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ullam laboris nisi ut aliquip ex ea commodo consequat.
+                                </strong>
+                            </Typography>
+                            <Grid container spacing={4} sx={{ marginTop: { xs: 3, md: "70px" } }}>
                                 {/* Fresh Menu */}
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={4} >
                                     <Box
                                         sx={{
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
+                                            justifyContent: 'center',
                                             transition: 'ease-in-out 0.3s',
                                             cursor: 'pointer',
                                             "&:hover": {
@@ -94,7 +101,8 @@ const About = () => {
                                                     boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
                                                     transform: 'translateY(-5px)'
                                                 }
-                                            }
+                                            },
+                                            mb: { xs: 3, md: 0 }
                                         }}
                                     >
                                         <Box
@@ -118,7 +126,6 @@ const About = () => {
                                         </Typography>
                                     </Box>
                                 </Grid>
-
                                 {/* Exclusive Dishes */}
                                 <Grid item xs={12} md={4}>
                                     <Box
@@ -134,7 +141,8 @@ const About = () => {
                                                     boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
                                                     transform: 'translateY(-5px)'
                                                 }
-                                            }
+                                            },
+                                            mb: { xs: 3, md: 0 }
                                         }}
                                     >
                                         <Box
@@ -158,7 +166,6 @@ const About = () => {
                                         </Typography>
                                     </Box>
                                 </Grid>
-
                                 {/* Various Drinks */}
                                 <Grid item xs={12} md={4}>
                                     <Box
@@ -174,7 +181,8 @@ const About = () => {
                                                     boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
                                                     transform: 'translateY(-5px)'
                                                 }
-                                            }
+                                            },
+                                            mb: { xs: 3, md: 0 }
                                         }}
                                     >
                                         <Box
@@ -199,8 +207,8 @@ const About = () => {
                                     </Box>
                                 </Grid>
                             </Grid>
-                        </Grid>
-                    </Grid>
+                        </Box>
+                    </Box>
 
                 </Box>
             </Container>

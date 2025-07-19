@@ -132,6 +132,9 @@ const Reservation = () => {
                 sx={{
                   position: 'relative',
                   mb: 1,
+                  fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem' },
+                  wordBreak: 'break-word',
+                  textAlign: { xs: 'center', sm: 'left' },
                   "&::before": {
                     content: "''",
                     position: 'absolute',
@@ -153,7 +156,7 @@ const Reservation = () => {
               >
                 Make A Reservation
               </Typography>
-              <Typography variant='h6' color='white'>
+              <Typography variant='h6' color='white' textAlign={'center'}>
                 You can call us directly at <span style={{ color: '#6F4E37' }}>225-88888</span>
               </Typography>
             </Box>
@@ -308,7 +311,25 @@ const Reservation = () => {
                 />
 
               </Grid>
-              <Button type='submit' sx={{ bgcolor: '#6F4E34', color: 'white', fontFamily: "'Rancho', cursive", margin: " 30px 230px", width: "150px", fontSize: "18px" }}>
+              <Button
+                type='submit'
+                sx={{
+                  bgcolor: '#6F4E34',
+                  color: 'white',
+                  fontFamily: "'Rancho', cursive",
+                  mt: 4,
+                  width: { xs: '100%', sm: 200, md: 230 },
+                  fontSize: { xs: '1.1rem', sm: '1.2rem', md: '1.25rem' },
+                  display: 'block',
+                  mx: 'auto',
+                  py: { xs: 1.2, sm: 1.5 },
+                  borderRadius: 2,
+                  boxShadow: '0 2px 8px rgba(111, 78, 52, 0.15)',
+                  '&:hover': {
+                    bgcolor: '#5a3e2a'
+                  }
+                }}
+              >
                 Reserve
               </Button>
             </Box>

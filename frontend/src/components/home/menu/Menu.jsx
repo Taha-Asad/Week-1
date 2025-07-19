@@ -9,12 +9,17 @@ import CoffeeIcon from '@mui/icons-material/Coffee';
 import axios from "axios"
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
+import breakFast from "../../../assets/pd-cat-lunch.png";
+import lunch from "../../../assets/pd-cat-lunch.png";
+import dessert from "../../../assets/pd-cat-dessert.png";
+import dinner from "../../../assets/pd-cat-dinner.png";
+import drinks from "../../../assets/pd-cat-dinner.png";
 const menuIcons = [
-  { key: 'breakfast', text: 'Breakfast', icon: <KebabDiningIcon /> },
-  { key: 'lunch', text: 'Lunch', icon: <RamenDiningIcon /> },
-  { key: 'dinner', text: 'Dinner', icon: <DinnerDiningIcon /> },
-  { key: 'dessert', text: 'Dessert', icon: <IcecreamIcon /> },
-  { key: 'drinks', text: 'Drinks', icon: <CoffeeIcon /> },
+  { key: 'breakfast', text: 'Breakfast', icon: <KebabDiningIcon />, image: breakFast  },
+  { key: 'lunch', text: 'Lunch', icon: <RamenDiningIcon />, image: lunch  },
+  { key: 'dinner', text: 'Dinner', icon: <DinnerDiningIcon />, image:  dinner },
+  { key: 'dessert', text: 'Dessert', icon: <IcecreamIcon />, image:  dessert  },
+  { key: 'drinks', text: 'Drinks', icon: <CoffeeIcon />, image: drinks  },
 ];
 const Menu = () => {
   const [activeCategory, setActiveCategory] = useState('breakfast');
@@ -46,7 +51,6 @@ const Menu = () => {
           alignItems: 'center',
           position: 'relative',
           py: 4,
-          marginBottom: "5%"
         }}
       >
         {/* Heading with Lines */}
@@ -81,6 +85,7 @@ const Menu = () => {
           variant="h2"
           color="#29272E"
           fontFamily="'Rancho', cursive"
+          textAlign={'center'}
           mb={4}
         >
           Tasty and Good Price
@@ -172,7 +177,7 @@ const Menu = () => {
               }}
             >
               <img
-                src={`/images/${activeCategory}.jpg`} // Replace with your real path
+                src={menuIcons.find(icon => icon.key === activeCategory)?.image}
                 alt={activeCategory}
                 style={{
                   width: '100%',

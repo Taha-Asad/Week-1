@@ -22,6 +22,7 @@ const Blog = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedPost, setSelectedPost] = useState(null);
     const [dialogOpen, setDialogOpen] = useState(false);
+    const [allPostsDialogOpen, setAllPostsDialogOpen] = useState(false);
 
     useEffect(() => {
         fetchBlogPosts();
@@ -170,6 +171,7 @@ const Blog = () => {
                 <Typography
                     variant="h2"
                     color="#29272E"
+                    textAlign={'center'}
                     fontFamily="'Rancho', cursive"
                     textTransform={'uppercase'}
                     mb={4}
@@ -194,7 +196,6 @@ const Blog = () => {
                             position: 'absolute',
                             left: { xs: 10, md: 20 },
                             zIndex: 10,
-                            backgroundColor: 'rgba(255,255,255,0.95)',
                             boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                             '&:hover': {
                                 backgroundColor: 'rgba(255,255,255,1)',
@@ -210,18 +211,21 @@ const Blog = () => {
                     {/* Blog Posts */}
                     <Box sx={{
                         display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
                         alignItems: 'center',
                         gap: { xs: 3, md: 6 },
                         maxWidth: '100%',
                         overflow: 'visible',
-                        py: 2
+                        py: 2,
+                        width: '100%',
                     }}>
                         {getVisiblePosts().map((post, index) => (
                             <Card
                                 key={`${post._id}-${index}`}
                                 sx={{
-                                    width: { xs: 280, sm: 320, md: 350 },
-                                    minHeight: 520,
+                                    width: { xs: '100%', sm: 320, md: 350 },
+                                    minHeight: { xs: 340, sm: 420, md: 520 },
+                                    mb: { xs: 3, sm: 0 },
                                     display: 'flex',
                                     flexDirection: 'column',
                                     borderRadius: 4,
@@ -435,7 +439,13 @@ const Blog = () => {
                                                 color: index === 1 ? '#8B4513' : '#6c757d',
                                                 textTransform: 'none',
                                                 fontWeight: 600,
-                                                fontSize: index === 1 ? '0.85rem' : '0.8rem',
+                                                fontSize: { xs: '1rem', sm: index === 1 ? '1.05rem' : '0.95rem', md: index === 1 ? '1.1rem' : '1rem' },
+                                                width: { xs: '100%', sm: 'auto' },
+                                                display: 'block',
+                                                mx: { xs: 'auto', sm: 0 },
+                                                py: { xs: 1.1, sm: 0.7 },
+                                                borderRadius: 2,
+                                                mt: { xs: 2, sm: 0 },
                                                 '&:hover': {
                                                     backgroundColor: index === 1
                                                         ? 'rgba(139, 69, 19, 0.15)'
@@ -533,6 +543,7 @@ const Blog = () => {
                                     backgroundColor: 'rgba(139, 69, 19, 0.1)'
                                 }
                             }}
+                            onClick={() => setAllPostsDialogOpen(true)}
                         >
                             View All Posts
                         </Button>
@@ -607,6 +618,70 @@ const Blog = () => {
                     </DialogActions>
                 </Dialog>
             )}
+
+            {/* All Blog Posts Dialog */}
+            <Dialog open={allPostsDialogOpen} onClose={() => setAllPostsDialogOpen(false)} maxWidth="md" fullWidth
+                PaperProps={{
+                    sx: {
+                        width: { xs: '98vw', sm: '90vw', md: '70vw' },
+                        m: { xs: 0.5, sm: 2 },
+                        p: { xs: 1, sm: 2 },
+                        borderRadius: 3
+                    }
+                }}
+            >
+                <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 700 }}>All Blog Posts</Typography>
+                    <IconButton onClick={() => setAllPostsDialogOpen(false)} sx={{ color: '#6c757d' }}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent dividers sx={{ maxHeight: { xs: '70vh', sm: '75vh', md: '80vh' }, p: { xs: 1, sm: 2 } }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        {blogPosts.map((post, idx) => (
+                            <Card
+                                key={post._id}
+                                sx={{
+                                    width: '100%',
+                                    mb: 1,
+                                    cursor: 'pointer',
+                                    background: idx % 2 === 0 ? '#f8f9fa' : '#fff',
+                                    '&:hover': { boxShadow: 4, background: '#f3e9e1' }
+                                }}
+                                onClick={() => {
+                                    setSelectedPost(post);
+                                    setDialogOpen(true);
+                                    setAllPostsDialogOpen(false);
+                                }}
+                            >
+                                <CardContent>
+                                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{post.title}</Typography>
+                                    <Typography variant="body2" sx={{ color: '#6c757d', mb: 1 }}>
+                                        {post.excerpt || (post.content && post.content.length > 120 ? post.content.substring(0, 120) + '...' : post.content || 'No content available')}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                            <VisibilityIcon sx={{ fontSize: 14, color: '#6c757d' }} />
+                                            <Typography variant="caption" sx={{ color: '#6c757d', fontSize: '0.7rem' }}>{post.views || 0}</Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                            <CommentIcon sx={{ fontSize: 14, color: '#6c757d' }} />
+                                            <Typography variant="caption" sx={{ color: '#6c757d', fontSize: '0.7rem' }}>{post.commentCount || 0}</Typography>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                                            <PersonIcon sx={{ fontSize: 14, color: '#6c757d' }} />
+                                            <Typography variant="caption" sx={{ color: '#6c757d', fontSize: '0.7rem' }}>{post.author?.name || 'Admin'}</Typography>
+                                        </Box>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setAllPostsDialogOpen(false)} color="primary">Close</Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 };

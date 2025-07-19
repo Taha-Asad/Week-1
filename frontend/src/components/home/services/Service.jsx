@@ -58,54 +58,55 @@ const Service = () => {
                 <Container>
                     <Box sx={{
                         display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
                         alignItems: 'center',
-                        justifyContent: 'space-between'
+                        justifyContent: { xs: 'center', sm: 'space-between' },
+                        gap: { xs: 3, sm: 0 }
                     }}>
                         {
                             serviceIte.map((item, id) => {
                                 return (
-                                    <>
-                                        <Box key={id}
-
+                                    <Box key={id}
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            transition: 'ease-in-out 0.3s',
+                                            cursor: 'pointer',
+                                            '&:hover': {
+                                                color: '#f15f2a',
+                                                '& > .circle-container': {
+                                                    boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                                                    transform: 'translateY(-5px)'
+                                                }
+                                            },
+                                            width: { xs: '100%', sm: 'auto' },
+                                            mb: { xs: 3, sm: 0 }
+                                        }}
+                                    >
+                                        <Box
+                                            className="circle-container"
                                             sx={{
+                                                border: '1px dashed #6F4E37',
+                                                width: 135,
+                                                height: 135,
+                                                bgcolor: 'white',
+                                                borderRadius: "50%",
                                                 display: 'flex',
-                                                flexDirection: 'column',
+                                                justifyContent: 'center',
                                                 alignItems: 'center',
                                                 transition: 'ease-in-out 0.3s',
-                                                cursor: 'pointer',
-                                                "&:hover": {
-                                                    color: '#f15f2a',
-                                                    "& > .circle-container": {
-                                                        boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
-                                                        transform: 'translateY(-5px)'
-                                                    }
-                                                }
-                                            }
-                                            }>
-                                            <Box
-                                                className="circle-container"
-                                                sx={{
-                                                    border: '1px dashed #6F4E37',
-                                                    width: 135,
-                                                    height: 135,
-                                                    bgcolor: 'white',
-                                                    borderRadius: "50%",
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    transition: 'ease-in-out 0.3s',
-                                                }}
-                                            >
-                                                <Box fontSize='3.75rem' sx={{ width: "35%", height: "35%" }}>{item.icon} </Box>
-                                            </Box>
-                                            <Typography variant='h5' fontSize={'17px'} fontWeight={600} sx={{ margin: "20px 0" }}>
-                                                {item.title}
-                                            </Typography>
-                                            <Typography variant='body1' textAlign={'center'}>
-                                                {item.desc}
-                                            </Typography>
+                                            }}
+                                        >
+                                            <Box fontSize='3.75rem' sx={{ width: "35%", height: "35%" }}>{item.icon} </Box>
                                         </Box>
-                                    </>
+                                        <Typography variant='h5' fontSize={'17px'} fontWeight={600} sx={{ margin: "20px 0" }}>
+                                            {item.title}
+                                        </Typography>
+                                        <Typography variant='body1' textAlign={'center'}>
+                                            {item.desc}
+                                        </Typography>
+                                    </Box>
                                 )
                             })
                         }

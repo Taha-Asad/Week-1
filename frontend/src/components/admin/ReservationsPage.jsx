@@ -97,9 +97,9 @@ const ReservationsPage = () => {
         return () => clearTimeout(timer);
     }, [filters, page]);
 
-    const handleStatusChange = async (reservationId, status) => {
+    const handleStatusChange = async (id, status) => {
         try {
-            await axios.put(`http://localhost:5000/api/v1/admin/reservations/${reservationId}`,
+            await axios.put(`http://localhost:5000/api/v1/admin/reservations/${id}`,
                 { status, note },
                 {
                     headers: {
