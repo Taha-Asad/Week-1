@@ -19,7 +19,6 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-
 // App middlewares
 app.use(morgan(NODE_ENV === 'production' ? 'combined' : 'dev'));
 app.use(express.json({ limit: '10mb' }));
